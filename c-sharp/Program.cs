@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Numerics;
 using System.Threading;
@@ -35,6 +35,9 @@ namespace Challenge
                     var dCandidateBuffer = ram.Slice(candidatePosition, candidateLength);
 
                     var dCandidate = new BigInteger(dCandidateBuffer.Span, true /* bigEndian */, true /* unsigned */);
+
+                    if (dCandidate >= N)
+                        return;
 
                     var decryptedSample = BigInteger.ModPow(messageEncrypted, dCandidate, N);
 

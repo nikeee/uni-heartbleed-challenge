@@ -28,6 +28,10 @@ def main():
             d_candidate_bytes = memory_bytes[d_offset_candidate: d_offset_candidate + d_length_candidate]
 
             d_candidate = int.from_bytes(d_candidate_bytes, byteorder='big')
+
+            if d_candidate >= N:
+                continue
+
             m_candidate = pow(c, d_candidate, N)
 
             if m_candidate == m:

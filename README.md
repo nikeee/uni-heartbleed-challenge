@@ -19,8 +19,8 @@ docker run --rm krypto-c-sharp
 # Ausgabe:
 Found d at 886:128:
 99927539702245916006383313519731656077828344258465375843888986008441295110874393258182025248720868292157071412441117118926508755556467311797191399024923918816071461009813484236652211423670107073264735642406057828993776773259251528156154234594052633158521143237899740605674695654985213105621487297133889842467
-real	0m 1.37s
-user	0m 9.82s
+real	0m 0.18s
+user	0m 0.84s
 sys	0m 0.01s
 ```
 
@@ -41,4 +41,4 @@ sys	0m 0.00s
 
 Was man sieht: `real` ist die tatsächlich benötigte Zeit (Wallclock-Time). Wenn man `user` und `system`addiert, erhält man die Zeit, die benötigt gewesen wäre, wenn man nur einen Prozessorkern zur Verfügung gehabt hätte. Ist sie identisch mit `real`, ist dies ein Zeichen dafür, dass nur ein Kern verwendet wurde.
 
-Bei meinem Testlauf (i7 mit 4 Kernen bzw. 8 Threads) liegt die `user + system`-Zahl in der C#-Version deutlich höher als in der Python-Version. Dies lässt sich dadurch erklären, dass 8 Threads gleichzeitig verschiedene Positionen für `d` ausprobieren. Dadurch wird das Ergebnis früher gefunden, es waren aber mehr Kerne beteiligt. Lässt man die C#-Lösung mit einem Thread laufen, ist diese langsamer als die Python-Lösung (~4.7 Sekunden Wallclock-Time). Dies liegt vermutlich daran, dass die ModPow-Implementierung von C# offenbar um einiges langsamer ist.
+Bei meinem Testlauf (i7 mit 4 Kernen bzw. 8 Threads) liegt die `user + system`-Zahl in der C#-Version deutlich höher als in der Python-Version. Dies lässt sich dadurch erklären, dass 8 Threads gleichzeitig verschiedene Positionen für `d` ausprobieren. Dadurch wird das Ergebnis früher gefunden, es waren aber mehr Kerne beteiligt.

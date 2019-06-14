@@ -40,5 +40,3 @@ sys	0m 0.00s
 ```
 
 Was man sieht: `real` ist die tatsächlich benötigte Zeit (Wallclock-Time). Wenn man `user` und `system`addiert, erhält man die Zeit, die benötigt gewesen wäre, wenn man nur einen Prozessorkern zur Verfügung gehabt hätte. Ist sie identisch mit `real`, ist dies ein Zeichen dafür, dass nur ein Kern verwendet wurde.
-
-Bei meinem Testlauf (i7 mit 4 Kernen bzw. 8 Threads) liegt die `user + system`-Zahl in der C#-Version deutlich höher als in der Python-Version. Dies lässt sich dadurch erklären, dass 8 Threads gleichzeitig verschiedene Positionen für `d` ausprobieren. Dadurch wird das Ergebnis früher gefunden, es waren aber mehr Kerne beteiligt.

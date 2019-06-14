@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Challenge
 {
@@ -30,21 +31,27 @@ namespace Challenge
 
             for (int candidateLength = maximumDLength; candidateLength > 0; --candidateLength)
             {
-                Parallel.For(0, ram.Length - maximumDLength, candidatePosition =>
+                Enumerable.Range(0, ram.Length - maximumDLength)
+                .Select(candidatePosition => (
+                    value: new BigInteger(
+                        ram.Slice(candidatePosition, candidateLength).Span,
+                        isUnsigned: true,
+                        isBigEndian: true
+                    ),
+                    position: candidatePosition,
+                    length: candidateLength
+                ))
+                .Where(candidate => candidate.value < N)
+                .OrderByDescending(candidate => candidate.value)
+                .AsParallel()
+                .ForAll(dCandidate =>
                 {
-                    var dCandidateBuffer = ram.Slice(candidatePosition, candidateLength);
-
-                    var dCandidate = new BigInteger(dCandidateBuffer.Span, true /* bigEndian */, true /* unsigned */);
-
-                    if (dCandidate >= N)
-                        return;
-
-                    var decryptedSample = BigInteger.ModPow(messageEncrypted, dCandidate, N);
+                    var decryptedSample = BigInteger.ModPow(messageEncrypted, dCandidate.value, N);
 
                     if (decryptedSample == message)
                     {
-                        Console.WriteLine($"Found d at {candidatePosition}:{candidateLength}:");
-                        Console.WriteLine(dCandidate.ToString());
+                        Console.WriteLine($"Found d at {dCandidate.position}:{dCandidate.length}:");
+                        Console.WriteLine(dCandidate.value.ToString());
                         Environment.Exit(0);
                         return;
                     }
